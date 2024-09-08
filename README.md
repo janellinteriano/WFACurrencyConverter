@@ -7,3 +7,4 @@
 https://github.com/janellinteriano/WFACurrencyConverter/blob/master/WFACurrencyConverter/gifs/CurrencyConverter.gif?raw=true
 
 </p>
+![CurrencyConverter](https://github.com/user-attachments/assets/44b2e84a-c5c2-4a1c-9a1d-641d655d33bb)

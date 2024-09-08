@@ -6,4 +6,11 @@
     My awesome demo:
 </p>
 
-<img src="https://github.com/user-attachments/assets/44b2e84a-c5c2-4a1c-9a1d-641d655d33bb" width="500" height="auto" alt="CurrencyConverter">
+<img src="https://github.com/user-attachments/assets/44b2e84a-c5c2-4a1c-9a1d-641d655d33bb" width="500" height="auto" alt="CurrencyConverter"> <bt><br>
+
+<h3>🧠⛈️ Brainstorming future edits 🤔</h3>
+<ul>
+    <li>A reset button</li>
+    <li>Changes to UI (adding flag images, different styles, etc.)</li>
+    <li>Multiple currency conversion</li>
+</ul>

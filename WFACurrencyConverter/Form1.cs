@@ -4,107 +4,62 @@ namespace WFACurrencyConverter
 {
     public partial class Form1 : Form
     {
-        public string userInput { get; set; }
-        public int currSelected { get; set; }
+        public string baseCurrency { get; set; }
+        public string targetCurrency { get; set; }
+        public decimal amountToConvert { get; set; }
 
         public Form1()
         {
             InitializeComponent();
         }
+
+        // save user base currency input
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // grab the currency code from the selected item
+            string selectedItem = comboBox2.SelectedItem.ToString();
+            baseCurrency = selectedItem.Substring(0, 3);
+        }
+
+        // save user amount input
         public void textBox1_TextChanged(object sender, EventArgs e)
         {
-            userInput = textBox1.Text;
-        }
-
-        public void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            currSelected = comboBox1.SelectedIndex;
-        }
-
-        public void button1_Click(object sender, EventArgs e)
-        {
-
-
-            double result;
-            string currName;
-            if (currSelected == ((int)CurrEnum.EUR))
+            if (textBox1.Text == string.Empty)
             {
-                result = double.Parse(userInput) * 0.941023;
-            }
-            else if (currSelected == ((int)CurrEnum.JPY))
-            {
-                result = double.Parse(userInput) * 154.224;
-            }
-            else if (currSelected == ((int)CurrEnum.CAD))
-            {
-                result = double.Parse(userInput) * 1.37833;
-            }
-            else if (currSelected == ((int)CurrEnum.AUD))
-            {
-                result = double.Parse(userInput) * 1.55186;
-            }
-            else if (currSelected == ((int)CurrEnum.SGD))
-            {
-                result = double.Parse(userInput) * 1.36265;
-            }
-            else if (currSelected == ((int)CurrEnum.INR))
-            {
-                result = double.Parse(userInput) * 83.5024;
-
+                amountToConvert = 0;
+                return;
             }
             else
             {
-                result = 0.00;
+                amountToConvert = decimal.Parse(textBox1.Text);
             }
-
-            newAmt.Text = DisplayNewAmount(result, currSelected);
         }
 
-
-        public static string DisplayNewAmount(double intResult, int currSelected)
+        // save user target currency input
+        public void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+            // grab the currency code from the selected item
+            string selectedItem = comboBox1.SelectedItem.ToString();
+            targetCurrency = selectedItem.Substring(0, 3);
+        }
 
-            if (intResult > 0)
+        public async void button1_Click(object sender, EventArgs e)
+        {
+            try
             {
-                string newResult;
-                if (currSelected == (int)CurrEnum.EUR)
-                {
-                    newResult = $"€{Math.Round(intResult, 2)}";
-                    return newResult;
-                }
-                else if (currSelected == (int)CurrEnum.JPY)
-                {
-                    newResult = $"¥{Math.Round(intResult, 2)}";
-                    return newResult;
-                }
-                else if (currSelected == (int)CurrEnum.CAD)
-                {
-                    newResult = $"${Math.Round(intResult, 2)}";
-                    return newResult;
-                }
-                else if (currSelected == (int)CurrEnum.AUD)
-                {
-                    newResult = $"${Math.Round(intResult, 2)}";
-                    return newResult;
-                }
-                else if (currSelected == (int)CurrEnum.SGD)
-                {
-                    newResult = $"${Math.Round(intResult, 2)}";
-                    return newResult;
-                }
-                else if (currSelected == (int)CurrEnum.INR)
-                {
-                    newResult = $"₹{Math.Round(intResult, 2)}";
-                    return newResult;
-                }
-                else
-                {
-                    newResult = "0.00";
-                    return newResult;
-                }
+                // instantiate API service object
+                APIService apiService = new APIService("YOUR_API_KEY_HERE");
+
+                // call the GetExchangeRateAsync method to get the exchange rate
+                decimal result = await apiService.GetExchangeRateAsync(baseCurrency, targetCurrency, amountToConvert);
+
+                // display the new amount after conversion
+                label3.Text = $"{amountToConvert} {baseCurrency} = {result} {targetCurrency}";
             }
-            return string.Empty;
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
